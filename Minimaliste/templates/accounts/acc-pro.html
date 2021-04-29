@@ -1,0 +1,169 @@
+{%extends 'main.html'%}
+{%block head%}
+	<title>Minimal-iste | Update to pro</title>
+	<script src="https://js.stripe.com/v3/"></script>
+{%endblock%}
+
+
+{%block body%}
+	{%if isPro%}
+		<h1>you are allready pro</h1>
+	{%else%}
+	<!-- container -->
+	<div class="container">
+		<div class="row">
+			<!-- Article main content -->
+			<article class="col-xs-12 maincontent">
+				<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+					<h3 class="thin text-center txt1">Création de compte professionel</h3><br>
+
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<form action="{% url 'charge' %}" method="post" id="payment-form">
+								{%csrf_token%}
+								<br><br>
+								<div class="row">
+								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+									<h6 class="mb-2  titleEditProf">Info utilisateur </h6>
+								</div>
+								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+									<div class="form-group">
+										<span class="label1">Siret</span>
+										<input type="text" class="form-control" name="siret">
+									</div>
+								</div>
+								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+									<div class="form-group">
+										<span class="label1">Start Up Nom</span>
+										<input type="text" class="form-control" name="startupName">
+									</div>
+								</div>
+								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+									<div class="form-group">
+										<span class="label1">Skills</span>
+										<input type="date" class="form-control" name="skills">
+									</div>
+								</div>
+								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+									<div class="form-group">
+										<span class="label1">Code Postal</span>
+										<input type="text" class="form-control" name="codePostal">
+									</div>
+								</div>
+								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+									<div class="form-group">
+										<span class="label1">Phone</span>
+										<input type="text" class="form-control" name="phone">
+									</div>
+								</div>
+							</div>
+								<hr>
+								<div class="row">
+									<span for="amount">Choose Amount:</span>
+									<br>
+									<br>
+									<select required name="amount" class="form-control" >
+									<option selected value="5">$5 for 1 month</option>
+									<option value="10">$10 for 3 months</option>
+									<option value="25">$25 for 6 months</option>
+									</select>
+								</div>
+								<br>
+								<div class="form-row">
+									<span for="card-element">
+									Credit or debit card :
+									</span>
+									<div id="card-element">
+									<!-- A Stripe Element will be inserted here. -->
+									</div>
+									<!-- Used to display form errors. -->
+									<div id="card-errors" role="alert"></div>
+								</div>
+								<div style="clear:left"></div>
+								<hr>
+								<div class="row">
+									<div class="col-lg-4 text-right">
+										<input type="submit" class="btn custom1 custom" value="Update to pro">
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</article>
+			<!-- /Article -->
+
+		</div>
+	</div>	<!-- /container -->
+			<script>
+				// Create a Stripe client.
+				var stripe = Stripe('pk_test_51Ic6x1IfzyVgfOjtAr8gEuKyqPJxypB8fsdpOgjOHmvsVVEV9dXBI5oohC7SpSncDJJN957TKGLh6GuH2HitPXWN00bHOrSEIF');
+
+				// Create an instance of Elements.
+				var elements = stripe.elements();
+
+				var style = {
+				base: {
+					color: '#32325d',
+					fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+					fontSmoothing: 'antialiased',
+					fontSize: '16px',
+					'::placeholder': {
+					color: '#aab7c4'
+					}
+				},
+				invalid: {
+					color: '#fa755a',
+					iconColor: '#fa755a'
+				}
+				};
+
+				// Create an instance of the card Element.
+				var card = elements.create('card', {style: style});
+
+				// Add an instance of the card Element into the `card-element` <div>.
+				card.mount('#card-element');
+
+				// Handle real-time validation errors from the card Element.
+				card.addEventListener('change', function(event) {
+				var displayError = document.getElementById('card-errors');
+				if (event.error) {
+					displayError.textContent = event.error.message;
+				} else {
+					displayError.textContent = '';
+				}
+				});
+
+				// Handle form submission.
+				var form = document.getElementById('payment-form');
+				form.addEventListener('submit', function(event) {
+				event.preventDefault();
+
+				stripe.createToken(card).then(function(result) {
+					if (result.error) {
+					// Inform the user if there was an error.
+					var errorElement = document.getElementById('card-errors');
+					errorElement.textContent = result.error.message;
+					} else {
+					// Send the token to your server.
+					stripeTokenHandler(result.token);
+					}
+				});
+				});
+
+				// Submit the form with the token ID.
+				function stripeTokenHandler(token) {
+				// Insert the token ID into the form so it gets submitted to the server
+				var form = document.getElementById('payment-form');
+				var hiddenInput = document.createElement('input');
+				hiddenInput.setAttribute('type', 'hidden');
+				hiddenInput.setAttribute('name', 'stripeToken');
+				hiddenInput.setAttribute('value', token.id);
+				form.appendChild(hiddenInput);
+
+				// Submit the form
+				form.submit();
+				}
+			</script>
+	{%endif%}
+{%endblock%}

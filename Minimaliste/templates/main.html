@@ -1,0 +1,122 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="{% static 'css/font-awesome.css'%}" rel="stylesheet">
+		<link href="{% static 'css/bootstrap.css'%}" rel="stylesheet">
+		<link href="{% static 'css/jquery.smartmenus.bootstrap.css'%}" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.simpleLens.css'%}">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/slick.css'%}">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/nouislider.css'%}">
+		<link id="switcher" href="{% static 'css/theme-color/default-theme.css'%}" rel="stylesheet">
+		<link href="{% static 'css/sequence-theme.modern-slide-in.css'%}" rel="stylesheet" media="all">
+		<link href="{% static 'css/style.css'%}" rel="stylesheet">
+		<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+		{%block head%}
+		<title>Minimal-iste</title>
+		{%endblock%}
+	</head>
+
+<body>
+	<a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
+	<nav id="menu" class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+			<a class="" href="{%url 'home'%}"><img src="{% static 'img/logo.png'%}" alt="logo img"> </a> </div>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+			<li><a href="{%url 'home'%}" class="page-scroll">Accueil</a></li>
+			<li><a href="{%url 'shop'%}" class="page-scroll">Collection</a></li>
+			<li><a href="{%url 'blog'%}" class="page-scroll">Blog</a></li>
+			<li><a href="{% url 'contact'%}" class="page-scroll">Contact</a></li>
+				{%if request.user.is_authenticated %}
+				<li>
+				<button class="book-btn" ><a href="{%url 'logout'%}">Se deconnecter</a>
+				</button>
+				</li>
+				<li><a href="{%url 'Profile' request.user.username %}" class="page-scroll">{{request.user}}</a></li>
+				{%else%}
+				<li>
+				<button class="book-btn" ><a href="{%url 'login'%}">Se Connecter</a>
+				</button></li>
+				{%endif%}
+			</ul>
+		</div>
+		</div>
+	</nav>
+	<!-- end Header -->
+		{%block body%}{%endblock%}
+		<br><br>
+		<!-- footer -->
+		<footer id="aa-footer">
+			<!-- footer bottom -->
+			<div class="aa-footer-top">
+			<div class="container">
+				<div class="row">
+				<div class="col-md-12">
+				<div class="aa-footer-top-area">
+					<div class="row">
+					<div class="col-lg-4 col-md-3 col-sm-6">
+						<div class="aa-footer-widget">
+						<h3></h3>
+						<ul class="aa-footer-nav">
+							<li><a href="#">A propos de nous</a></li>
+							<li><a href="#">Condition générales d'utilisation</a></li>
+							<li><a href="#">Politique de confidentialité</a></li>
+						</ul>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-3 col-sm-6">
+						<div class="aa-footer-widget">
+						<div class="aa-footer-widget">
+							<h3></h3>
+							<ul class="aa-footer-nav">
+							<li><a href="#">Professionnels</a></li>
+							<li><a href="#">Contactez-nous</a></li>
+							<li><a href="#">Aide</a></li>
+							</ul>
+						</div>
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-6">
+						<div class="aa-footer-widget">
+						<div class="aa-footer-widget">
+							<div class="aa-footer-social">
+							<br><br><br>
+							<a href="#"><span class="fa fa-facebook"></span></a>
+							<a href="#"><span class="fa fa-twitter"></span></a>
+							<a href="#"><span class="fa fa-google-plus"></span></a>
+							<a href="#"><span class="fa fa-youtube"></span></a>
+							</div>
+						</div>
+						</div>
+					</div>
+					</div>
+				</div>
+				</div>
+			</div>
+			</div>
+			</div>
+		</footer>
+		<!-- / footer -->
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="{% static 'js/bootstrap.js'%}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery.smartmenus.js'%"></script>
+	<script type="text/javascript" src="{% static 'js/jquery.smartmenus.bootstrap.js'%}"></script>
+	<script src="{% static 'js/sequence.js'%}"></script>
+	<script src="{% static 'js/sequence-theme.modern-slide-in.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery.simpleGallery.js'%}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery.simpleLens.js'%}"></script>
+	<script type="text/javascript" src="{% static 'js/slick.js'%}"></script>
+	<script type="text/javascript" src="{% static 'js/nouislider.js'%}"></script>
+	<script src="{% static 'js/custom.js'%}"></script>
+	<script  src="{% static 'js/script.js'%}"></script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

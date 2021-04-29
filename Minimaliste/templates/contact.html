@@ -1,0 +1,93 @@
+{%extends 'main.html'%}
+    {%block head%}
+    <title>Minimal-iste | Contact</title>
+    {%endblock%}
+
+
+{%block body%}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{%url 'home'%}">Accueil</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="{%url 'contact'%}">Contact</a></li>
+  </ol>
+</nav>
+<!-- start contact section -->
+<section id="aa-contact">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-contact-area">
+            <div class="aa-contact-top">
+              <h2>Nous attendons de vous aider</h2>
+              <p></p>
+            </div>
+            <!-- contact map -->
+            <div id="wrapper-9cd199b9cc5410cd3b1ad21cab2e54d3">
+            <div id="map-9cd199b9cc5410cd3b1ad21cab2e54d3"></div><script>(function () {
+                var setting = {"height":450,"width":3000,"zoom":5,"queryString":"France","place_id":"ChIJMVd4MymgVA0R99lHx5Y__Ws","satellite":false,"centerCoord":[46.43945823018682,2.0516999531444124],"cid":"0x6bfd3f96c747d9f7","lang":"fr","cityUrl":"/france/gueret-36020","cityAnchorText":"Carte de Guéret, Creuse, France","id":"map-9cd199b9cc5410cd3b1ad21cab2e54d3","embed_id":"463487"};
+                var d = document;
+                var s = d.createElement('script');
+                s.src = 'https://1map.com/js/script-for-user.js?embed_id=463487';
+                s.async = true;
+                s.onload = function (e) {
+                  window.OneMap.initMap(setting)
+                };
+                var to = d.getElementsByTagName('script')[0];
+                to.parentNode.insertBefore(s, to);
+              })();</script><a href="https://1map.com/fr/map-embed">1 Map</a></div>
+
+
+           <!-- Contact address -->
+           <div class="aa-contact-address">
+             <div class="row">
+               <div class="col-md-8">
+                 <div class="aa-contact-address-left">
+                   <form class="comments-form contact-form" action="">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">                        
+                          <input type="text" placeholder="Nom" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">                        
+                          <input type="email" placeholder="Email" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                     <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">                        
+                          <input type="text" placeholder="Sujet" class="form-control">
+                        </div>
+                      </div>
+                  
+                    </div>                  
+                     
+                    <div class="form-group">                        
+                      <textarea class="form-control" rows="3" placeholder="Message"></textarea>
+                    </div>
+                    <button class="aa-secondary-btn">Envoyer</button>
+                  </form>
+                 </div>
+               </div>
+               <div class="col-md-4">
+                 <div class="aa-contact-address-right">
+                   <address>
+                     <h4>Minimal-iste</h4>
+                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum modi dolor facilis! Nihil error, eius.</p>
+                     <p><span class="fa fa-home"></span>Paris, 13, france</p>
+                     <p><span class="fa fa-phone"></span>+ 021.343.7575</p>
+                     <p><span class="fa fa-envelope"></span>Email: support@minimaliste.com</p>
+                   </address>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+</section>
+
+{%endblock%}

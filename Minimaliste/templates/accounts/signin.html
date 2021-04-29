@@ -1,0 +1,74 @@
+{%extends 'main.html'%}
+{%block head%}
+<title>Minimal-iste | LOGIN</title>
+{%endblock%}
+
+
+{%block body%}
+<!-- container -->
+<div class="container">
+
+	<div class="row">
+		<!-- Article main content -->
+		<article class="col-xs-12 maincontent">
+			<br>
+			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+
+				<h3 class=" text-center  txt1">Connectez-vous </h3>
+						<h5 class=" text-center">pour decouvrir minimal-iste.com </h5>
+						<br><br>
+				<div class="panel panel-default">
+					<div class="panel-body">
+
+						<form action="" method="POST">
+							{%csrf_token%}
+							<div class="top-margin">
+								<input  placeholder="Username" type="text" name="username" class="form-control">
+							</div>
+							<div class="top-margin">
+								<input type="password"  placeholder="Mot de passe" name="password" class="form-control">
+							</div>
+
+							<hr>
+
+							<div class="row">
+								<div class="col-lg-8 text-left">
+									<input type="checkbox">
+									<a>Garder ma session ouverte sur</a>
+									</label>
+								</div>
+								<div class="col-lg-4 text-right">
+									<b><a href="{%url 'reset_password'%}">Mot De Passe Oublié?</a></b>
+								</div>
+							</div><br>
+							<div class="row">
+								<div class="col-lg-12 text-left">
+									<button class="btn custom1 custom" type="submit">Sign in</button>
+								</div>
+								</div>
+								<br>
+						{%if messages%}
+						<div class="alert alert-danger" role="alert">
+							{%for msg in messages%}
+							{{msg}}
+							{%endfor%}
+						</div>
+						{%endif%}
+								<div class="row">
+									<div class="col-lg-12 ">
+										<a href="{%url 'sign-up'%}">Vous n’avez pas de compte ?</a><br>
+										<b><a href="{%url 'sign-up'%}">S'inscrire</a></b>
+									</div>
+								</div>
+
+							</form>
+					</div>
+				</div>
+
+			</div>
+		</article>
+		<!-- /Article -->
+	</div>
+</div>	<!-- /container -->
+
+{%endblock%}

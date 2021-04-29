@@ -1,0 +1,14 @@
+{%extends 'main.html'%}
+{%block head%}
+    <title>Minimal-iste | Submit</title>
+{%endblock%}
+{%block body%}
+<h1>Sbumit page</h1>
+<h3>{{post}}</h3>
+<form action="{%url 'testPayment' %}" method="POST">
+    {%csrf_token%}
+    {{form}}
+    <input type="submit"/>
+</form>
+{%endblock%}
+

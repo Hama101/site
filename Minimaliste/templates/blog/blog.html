@@ -1,0 +1,110 @@
+{%extends 'main.html'%}
+{%block head%}
+<style>
+</style>
+<title>Minimal-iste | Blog </title>
+{%endblock%}
+
+{%block body%}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{%url 'home'%}">Accueil</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{%url 'blog'%}">Blog</a></li>
+    </ol>
+</nav>
+<!-- Blog Archive -->
+<section id="aa-blog-archive">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="aa-blog-archive-area aa-blog-archive-2">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="aa-blog-content">
+                                <div class="row">
+                                    {%for post in posts %}
+                                    <div class="col-md-4 col-sm-4">
+                                        <article class="aa-latest-blog-single">
+                                            <figure class="aa-blog-img">
+                                                <a href="{%url 'blogPost' post.id %}"><img alt="img" src="{{post.imgUrl}}"></a>
+                                                <figcaption class="aa-blog-img-caption">
+                                                    <span href="#"><i class="fa fa-clock-o"></i>{{post.created}}</span>
+                                                </figcaption>
+                                            </figure>
+                                            <div class="aa-blog-info">
+                                                <h3 class="aa-blog-title"><a href="{%url 'blogPost' post.id %}">{{post}}</a>
+                                                </h3>
+                                                <p>{{post.shortDescription}}</p>
+                                                <a class="aa-read-mor-btn" href="{%url 'blogPost' post.id %}">Lire la suite <span
+                                                        class="fa fa-long-arrow-right"></span></a>
+                                            </div>
+                                        </article>
+                                    </div>
+                                    {%endfor%}
+                                </div>
+                            </div>
+                            <!-- Blog Pagination -->
+                            {%if posts%}
+                    <div class="aa-product-catg-pagination">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                {%if posts.has_previous%}
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="?page={{posts.previous_page_number}}" tabindex="-1"><<</a>
+                                </li>
+                                {%endif%}
+                                {% for i in posts.paginator.page_range %}
+                                {%if posts.number == i%}
+                                <li class="page-item"><a class="page-link" href="?page={{i}}"><strong>{{i}}</strong></a></li>
+                                {%elif i > posts.number|add:'-3' and i < posts.number|add:'3' %} <li class="page-item"><a class="page-link"
+                                        href="?page={{i}}">{{i}}</a></li>
+                                    {%endif%}
+                                    {%endfor%}
+                                    {%if posts.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{posts.next_page_number}}">>></a>
+                                    </li>
+                                    {%endif%}
+                            </ul>
+                        </nav>
+                    </div>
+                    {%endif%}
+                        </div>
+                        <div class="col-md-3">
+                            <aside class="aa-blog-sidebar">
+                                <div class="aa-sidebar-widget">
+                                    <h3>Categories</h3>
+                                    <ul class="aa-catg-nav">
+                                        <li><a href="{%url 'filterbycat' 'Marketplace' %}">Marketplace Minimaliste </a></li>
+                                        <li><a href="{%url 'filterbycat' 'Location Minimaliste' %}">Location Minimaliste </a></li>
+                                        <li><a href="{%url 'filterbycat' 'Prestations de Service ' %}">Prestations de Service </a></li>
+                                        <li><a href="{%url 'filterbycat' 'Echange' %}">Echange </a></li>
+                                        <li><a href="{%url 'filterbycat' 'Objets gratuits' %}">Objets gratuits </a></li>
+                                    </ul>
+                                </div>
+                                <div class="aa-sidebar-widget">
+                                    <h3>Tags</h3>
+                                    <div class="tag-cloud">
+                                        <form action="" method="get">
+                                            {%csrf_token%}
+                                            {{myFilter.form.tags}}
+                                            <br>
+                                            <input type="submit" class="about-view travel-btn" id="submitbtn" value="Rechercher">
+                                        </form>
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    s = document.getElementById("id_tags")
+    s.classList.add("form-control")
+
+</script>
+<!-- / Blog Archive -->
+{%endblock%}

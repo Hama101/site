@@ -1,0 +1,142 @@
+{%extends 'main.html'%}
+{%block head%}
+<title>{{post}}</title>
+{%endblock%}
+
+{%block body%}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{%url 'home'%}">Accueil</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{%url 'blog'%}">Blog</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{%url 'blogPost' post.id%}">{{post}}</a></li>
+    </ol>
+</nav>
+<section id="aa-blog-archive">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="aa-blog-archive-area">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <!-- Blog details -->
+                            <div class="aa-blog-content aa-blog-details">
+                                <article class="aa-blog-content-single">
+                                    <h2><a href="#">{{post}}</a></h2>
+                                    <div class="aa-article-bottom">
+                                        <div class="aa-post-author">
+                                            Author : <b href="#">Marwa DhifAllah</b>
+                                        </div>
+                                        <div class="aa-post-date">
+                                            {{post.created}}
+                                        </div>
+                                    </div>
+                                    <figure class="aa-blog-img">
+                                        <a href="#"><img src="{{post.imgUrl}}" alt="fashion img"></a>
+                                    </figure>
+                                    {{post.body | safe}}
+                                    <div class="blog-single-bottom">
+                                        <div class="row">
+                                            <div class="col-md-8 col-sm-6 col-xs-12">
+                                                <div class="blog-single-tag">
+                                                    <span>Tags:</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6 col-xs-12">
+                                                <div class="blog-single-social">
+                                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                                    <a href="#"><i class="fa fa-linkedin"></i></a>
+                                                    <a href="#"><i class="fa fa-google-plus"></i></a>
+                                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </article>
+                                <!-- blog navigation -->
+                                <!-- Blog Comment threats -->
+                                <div class="aa-blog-comment-threat">
+                                    <h3>Commentaires ( {{length}} )</h3>
+                                    <div class="comments">
+                                        <ul class="commentlist">
+                                            {%for com in comments%}
+                                            <li>
+                                                <div class="media">
+                                                    <div class="media-left">
+                                                        <img class="media-object news-img"
+                                                            src="{{com.user.profile.avatar}}" alt="img">
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h4 class="author-name">{{com.user}}</h4>
+                                                        <span class="comments-date"> {{com.commented_at}}</span>
+                                                        <p>{{com.body}}</p>
+                                                        <a href="#" class="reply-btn">Reply</a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            {%endfor%}
+                                        </ul>
+                                    </div>
+                                    <div class="aa-blog-archive-pagination">
+                                        {%if comments%}
+                    <div class="aa-product-catg-pagination">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                {%if comments.has_previous%}
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="?page={{comments.previous_page_number}}" tabindex="-1"><<</a>
+                                </li>
+                                {%endif%}
+                                {% for i in comments.paginator.page_range %}
+                                {%if comments.number == i%}
+                                <li class="page-item"><a class="page-link" href="?page={{i}}"><strong>{{i}}</strong></a></li>
+                                {%elif i > comments.number|add:'-3' and i < comments.number|add:'3' %} <li class="page-item"><a class="page-link"
+                                        href="?page={{i}}">{{i}}</a></li>
+                                    {%endif%}
+                                    {%endfor%}
+                                    {%if comments.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{comments.next_page_number}}">>></a>
+                                    </li>
+                                    {%endif%}
+                            </ul>
+                        </nav>
+                    </div>
+                    {%endif%}
+                                    </div>
+                                </div>
+                                <!-- blog comments form -->
+                                <div id="respond">
+                                    <h3 class="reply-title">Ajouter un commentaire</h3>
+                                    <form id="commentform" method="POST" action="">
+                                        {%csrf_token%}
+                                        <p class="comment-form-comment">
+                                            <label for="comment"></label>
+                                            <textarea name="comment" cols="45" rows="8" aria-required="true"
+                                                required="required"></textarea>
+                                        </p>
+                                        <p class="form-submit">
+                                            <input type="submit" name="submit" class="aa-browse-btn" value="Ajouter">
+                                        </p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <aside class="aa-blog-sidebar">
+                                <h3>Categories</h3>
+                                    <ul class="aa-catg-nav">
+                                        <li><a href="{%url 'filterbycat' 'Marketplace' %}">Marketplace Minimaliste </a></li>
+                                        <li><a href="{%url 'filterbycat' 'Location Minimaliste' %}">Location Minimaliste </a></li>
+                                        <li><a href="{%url 'filterbycat' 'Prestations de Service ' %}">Prestations de Service </a></li>
+                                        <li><a href="{%url 'filterbycat' 'Echange' %}">Echange </a></li>
+                                        <li><a href="{%url 'filterbycat' 'Objets gratuits' %}">Objets gratuits </a></li>
+                                </ul>
+                            </aside>
+                        </div>
+                    </div>
+</section>
+
+
+{%endblock%}

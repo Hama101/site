@@ -1,0 +1,65 @@
+{%extends 'main.html'%}
+
+{%block head%}
+	<title>Minimal-iste | SIGNUP</title>
+{%endblock%}
+
+{%block body%}
+	<div class="container">
+
+		<div class="row">
+			<!-- Article main content -->
+			<article class="col-xs-12 maincontent">
+				<br>
+				<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h3 class="thin text-center txt1">Inscription</h3>
+							<form method="POST" action="">
+								{%csrf_token%}
+								<div class="top-margin">
+									Nom
+									{{form.username}}
+								</div>
+								<div class="top-margin">
+									E-mail
+									{{form.email}}
+								</div>
+								<div class="top-margin">
+									Mot de passe (minimum 8 caractére)
+									{{form.password1}}
+								</div>
+								<div class="top-margin">
+									Saisissez le mot de passe a nouveau
+									{{form.password2}}
+								</div><br>
+								<div class="row">
+									<div class="col-lg-4 ">
+										<input class="btn  custom1 custom" type="submit" value="S'INSCRIRE">
+									</div>
+								</div>
+							</form>
+							<br>
+							{%if form.errors%}
+							<div class="alert alert-danger" role="alert">
+								{{form.errors}}
+							</div>
+							{%endif%}
+						</div>
+					</div>
+				</div>
+			</article>
+			<!-- /Article -->
+
+		</div>
+	</div>	<!-- /container -->
+	<script>
+		var inputs = document.getElementsByTagName('input')
+		for (i=0 ; i<inputs.length -1 ;i++){
+			inputs[i].classList.add('form-control')
+		}
+	</script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+{%endblock%}
+
+

@@ -1,0 +1,303 @@
+{%extends 'main.html'%}
+{%load static%}
+{%block head%}
+
+<title>MinimaL-iste</title>
+{%endblock%}
+
+{%block body%}
+<section class="testemonial">
+    <div class="container">
+        <div class="text-center">
+            <h2>
+                Bienvenue sur Minimal-iste,
+            </h2>
+            <p>
+                le site de petites annonces gratuites minimaliste en Europe
+            </p>
+        </div>
+    </div>
+</section>
+<div>
+<br>
+<section class="travel-box">
+    <form action="shop" method="GET">
+        {%csrf_token%}
+    <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+        <div class="single-travel-boxes">
+            <div id="desc-tabs" class="desc-tabs">
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active fade in" id="tours">
+                <div class="tab-para">
+                    <div class="row">
+                    <div class="col-lg-2 col-md-4 col-sm-12">
+                        <div class="single-tab-select-box">
+                        <h2>Catégories</h2>
+                        <div class="">
+                            {{myFilter.form.category}}
+                            </div><!-- /.travel-select-icon -->
+                            </div>
+                        <!--/.single-tab-select-box-->
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-12">
+                        <div class="single-tab-select-box">
+                            <h2>Sub Catégories</h2>
+                            <div id="place1">
+                                <select name="sub_category" id="id_sub_category">
+                                    <option value="" selected>---------</option>
+                                    <option value="Véhicules">Véhicules</option>
+                                    <option value="Vélos">Vélos</option>
+                                    <option value="Trotinette éléctrique">Trotinette éléctrique</option>
+                                    <option value="Immobilier">Immobilier</option>
+                                    <option value="Loisirs">Loisirs</option>
+                                    <option value="Jeu et jouets">Jeu et jouets</option>
+                                    <option value="Jeux vidéos et consoles">Jeux vidéos et consoles</option>
+                                    <option value="Collection">Collection</option>
+                                    <option value="Alimentation">Alimentation</option>
+                                    <option value="Mode">Mode</option>
+                                    <option value="Périculture">Périculture</option>
+                                    <option value="Multimédia High tech">Multimédia High tech</option>
+                                    <option value="Maison et jardin">Maison et jardin</option>
+                                    <option value="Matériel professionnel">Matériel professionnel</option>
+                                    <option value="Divers">Divers</option>
+                                    <option value="Autres">Autres</option>
+                                </select>
+                            <!-- /.select-->
+                        </div><!-- /.travel-select-icon -->
+                        </div>
+                        <!--/.single-tab-select-box-->
+                    </div>
+                    <!--/.col-->
+                    <div class="col-lg-4 col-md-3 col-sm-4">
+                        <div class="single-tab-select-box">
+                            <h2>Que recherchez vous ?</h2>
+                            <div class="search-check-icon">
+                                {{myFilter.form.title}}
+                            </div><!-- /.travel-check-icon -->
+                        </div>
+                        <!--/.single-tab-select-box-->
+                    </div>
+                    <!--/.col-->
+                    <div class="col-lg-2 col-md-1 col-sm-4">
+                        <div class="single-tab-select-box">
+                        <h2>Pays</h2>
+                            <div class="search-check-icon">
+                                {{myFilter.form.pays}}
+                        </div><!-- /.travel-check-icon -->
+                        </div>
+                        <!--/.single-tab-select-box-->
+                    </div>
+                    <!--/.col-->
+                    <div class="col-lg-2 col-md-1 col-sm-4">
+                        <div class="single-tab-select-box">
+                        <h2>Ville</h2>
+                        <div class="search-check-icon">
+                            {{myFilter.form.ville}}
+                        </div><!-- /.travel-check-icon -->
+                        </div>
+                        <!--/.single-tab-select-box-->
+                    </div>
+                    <!--/.col-->
+                    </div>
+                    <!--/.row-->
+                    <div class="row">
+                    <div class="col-sm-5">
+                        <div class="travel-budget">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-4">
+                                <h3 class="title">Prix</h3>
+                                <input type="range" name="maxPrice" min="{{minMaxPrice.price__min}}" max="{{minMaxPrice.price__max}}" step="1" value="{{minMaxPrice.price__max}}">
+                                <label class="valueRang">90€</label>
+                                <a class="valueRang">€</a>
+                            </div>
+                        </div>
+                        </div>
+                        <!--/.travel-budget-->
+                    </div>
+                    <!--/.col-->
+                    <div class="clo-sm-7">
+                        <div class="about-btn travel-mrt-0 pull-right">
+                        <br><br><br>
+                        <input type="submit" class="about-view travel-btn" id="submitbtn" value="Rechercher">
+                        <!--/.travel-btn-->
+                        </div>
+                        <!--/.about-btn-->
+                    </div>
+                    <!--/.col-->
+                    </div>
+                    <!--/.row-->
+                </div>
+                <!--/.tab-para-->
+                </div>
+                <!--/.tabpannel-->
+            </div>
+            <!--/.row-->
+            </div>
+            <!--/.tabpannel-->
+        </div>
+        <!--/.tab content-->
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</form>
+</section>
+
+<br><br>
+
+
+<!-- Start Section -->
+<section class="container py-5">
+    <br><br><br>
+    <h1 class="h1 text-center">Top catégories </h1> <br><br>
+    <div class="row text-center pt-5 pb-3">
+    <div class="col-lg-6 m-auto">
+    </div>
+    </div>
+    <div class="row ">
+    <div class="col-lg-1"></div>
+
+    <div class="col-md-6 col-lg-2 pb-5">
+    <div class="h-100 py-5 services-icon-wap shadow">
+    <a href="{%url 'filterbycat' 'Marketplace' %}">
+        <div class="h1 text-success text-center">
+            <img src="{% static 'img/icones/icoS.jpg'%}" style="width:126px ;">
+        </div>
+        <h2 class="h5 mt-4 text-center">Marketplace
+            Minimaliste</h2>
+    </a>
+    </div>
+    </div>
+
+    <div class="col-md-6 col-lg-2 pb-5">
+    <div class="h-100 py-5 services-icon-wap shadow">
+        <a href="{%url 'filterbycat' 'Location'%}">
+            <div class="h1 text-success text-center"><img src="{% static 'img/icones/icoL.jpg'%}" style="width:126px ;">
+            </div>
+            <h2 class="h5 mt-4 text-center">Location Minimaliste</h2>
+        </a>
+    </div>
+    </div>
+
+    <div class="col-md-6 col-lg-2 pb-5">
+        <div class="h-100 py-5 services-icon-wap shadow">
+        <a href="{% url 'filterbycat' 'Services' %}">
+            <div class="h1 text-success text-center"><img src="{% static 'img/icones/icoSer.jpg'%}"
+                style="width:126px ;"></div>
+            <h2 class="h5 mt-4 text-center">Prestations de Service</h2>
+        </a>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-2 pb-5">
+        <div class="h-100 py-5 services-icon-wap shadow">
+        <a href="{% url 'filterbycat' 'Echange' %}">
+            <div class="h1 text-success text-center"><img src="{% static 'img/icones/icoEchan.jpg'%}"
+                style="width:126px ;"></div>
+            <h2 class="h5 mt-4 text-center">Echange</h2>
+        </a>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-2 pb-5">
+        <div class="h-100 py-5 services-icon-wap shadow">
+        <a href="{%url 'filterbycat' 'Objets gratuits'%}">
+            <div class="h1 text-success text-center"><img src="{% static 'img/icones/icoObj.jpg'%}"
+                style="width:126px ;"></div>
+            <h2 class="h5 mt-4 text-center">Objets gratuits</h2>
+        </a>
+        </div>
+    </div>
+</div>
+</section>
+<!-- End Section -->
+<hr>
+<br>
+
+
+<!-- testemonial Start -->
+<section class="testemonial">
+		<div class="container">
+
+			<div class="gallary-header text-center">
+				<h2>
+					Vivons avec moins d'objets pour plus de liberté
+				</h2>
+				<p>
+					Rejoignez-nous
+				</p>
+				<br>
+				<a class="btn custom1 custom" href="{%url 'login'%}">Communauté</a>
+			</div>
+			<!--/.gallery-header-->
+		</div>
+		<!--/.container-->
+</section>
+<script>
+var selects = document.getElementsByTagName("select")
+selects[0].classList.add("form-control")
+selects[1].classList.add("form-control")
+var inputs = document.getElementsByTagName("input")
+inputs[0].classList.add("form-control")
+inputs[1].classList.add("form-control")
+inputs[2].classList.add("form-control")
+inputs[3].classList.add("form-control")
+cat = document.getElementById("id_category")
+    cat.classList.add("form-control")
+    cat.setAttribute("onchange","show_sub()")
+    //select for sub cat
+    data1 = [`<select name="sub_category" id="id_sub_category">
+        <option value="" selected>---------</option>
+        <option value="Véhicules">Véhicules</option>
+        <option value="Vélos">Vélos</option>
+        <option value="Trotinette éléctrique">Trotinette éléctrique</option>
+        <option value="Immobilier">Immobilier</option>
+        <option value="Loisirs">Loisirs</option>
+        <option value="Jeu et jouets">Jeu et jouets</option>
+        <option value="Jeux vidéos et consoles">Jeux vidéos et consoles</option>
+        <option value="Collection">Collection</option>
+        <option value="Alimentation">Alimentation</option>
+        <option value="Mode">Mode</option>
+        <option value="Périculture">Périculture</option>
+        <option value="Multimédia High tech">Multimédia High tech</option>
+        <option value="Maison et jardin">Maison et jardin</option>
+        <option value="Matériel professionnel">Matériel professionnel</option>
+        <option value="Divers">Divers</option>
+        <option value="Autres">Autres</option>
+    </select>` ,
+            ` <select name="sub_category" class="sub form-control" id="id_sub_category">
+                <option value="" selected>---------</option>
+                <option value="Forfait minimal-iste">Forfait minimal-iste</option>
+                <option value="Produits minimal-iste">Produits minimal-iste</option>
+                <option value="Rénovation minimaliste">Rénovation minimaliste</option>
+                <option value="Construction minimaliste">Construction minimaliste</option>
+                <option value="Désenconbrement">Désenconbrement</option>
+                <option value="Rangement">Rangement</option>
+                <option value="Numérisation">Numérisation</option>
+                <option value="Décoration d'interieur">Décoration d'interieur</option>
+                <option value="Architecture">Architecture</option>
+                <option value="Nettoyage">Nettoyage</option>
+                <option value="Autres">Autres</option>
+            </select>`]
+    place1 = document.getElementById("place1")
+function show_sub(){
+    if (! cat.value){
+        place1.innerHTML = ''
+        set()
+    }else if (cat.value == "Services"){
+        place1.innerHTML = data1[1]
+        document.getElementById("id_sub_category").classList.add("form-control")
+        set()
+    }else{
+        place1.innerHTML =  data1[0]
+        document.getElementById("id_sub_category").classList.add("form-control")
+        set()
+    }
+}
+</script>
+{%endblock%}

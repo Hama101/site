@@ -1,0 +1,432 @@
+{%extends 'main.html'%}
+{%load static%}
+{%block head%}
+<style>
+    .form-control{
+        max-width:220px;
+    }
+    .gfg .aa-product-img{
+        max-width: 250px;
+        max-height: 300px;
+    }
+    .img{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+</style>
+<title>Minimal-iste | collection</title>
+{%endblock%}
+
+{%block body%}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{%url 'home'%}">Accueil</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{%url 'shop'%}">Collection</a></li>
+    </ol>
+</nav>
+<!-- product category -->
+<section id="aa-product-category">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-8 col-md-push-3">
+                <div class="aa-product-catg-content">
+                    <div class="aa-product-catg-head">
+                        <div class="aa-product-catg-head-left">
+                            <form action="" class="aa-sort-form">
+                                <a href="{%url 'shop'%}">Tous</a>
+                            </form>
+                            <form action="" id="sTri" method="GET"class="aa-show-form">
+                                {%csrf_token%}
+                                <select name="tri" onchange="submitTri()">
+                                    <option value="" selected>---------</option>
+                                    <option value="1">Tri: Plus rècentes </option>
+                                    <option value="2">Tri: Plus anciennes</option>
+                                    <option value="3">Tri: Prix croissants</option>
+                                    <option value="4">Tri: Prix dècroissants</option>
+                                </select>
+                            </form>
+                        </div>
+                        <div class="aa-product-catg-head-right">
+                            <a id="grid-catg" href="#"><span class="fa fa-th"></span></a>
+                            <a id="list-catg" href="#"><span class="fa fa-list"></span></a>
+                        </div>
+                    </div>
+                    <div class="aa-product-catg-body">
+                        <ul class="aa-product-catg">
+                            <!-- start single product item -->
+                            {%for post in posts%}
+                            <li>
+                                <figure>
+                                    <div class="gfg">
+                                    <a class="aa-product-img" href="{%url 'viewpost' post.id %}">
+                                        <img class="img" src="{{post.imgUrl}}">
+                                    </a>
+                                    </div>
+                                    <br><br>
+                                    <figcaption>
+                                        <h4 class="aa-product-title"><a href="{%url 'viewpost' post.id %}">{{post}}</a></h4>
+                                        {%if post.price == 0 %}
+                                        <span class="aa-product-price">Gratuit</span>
+                                        {%else%}
+                                        <span class="aa-product-price">€{{post.price}}</span>
+                                        {%endif%}
+                                        <p class="aa-product-descrip">{{post.shortDescription}}</p>
+                                        {%if post.user == request.user or admin %}
+                                        <a href="{% url 'updatePost' post.id %}" class="aa-add-card-btn col-lg-6">Modifier</a>
+                                        <a href="{% url 'deletePost' post.id %}" class="aa-add-card-btn1 col-lg-6">SUPPRIMER</a>
+                                        {%endif%}
+                                    </figcaption>
+                                </figure>
+                            </li>
+                            {%endfor%}
+                        </ul>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            </div>
+                        </div>
+                    </div>
+                    {%if posts%}
+                    <div class="aa-product-catg-pagination">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                {%if posts.has_previous%}
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="?page={{posts.previous_page_number}}" tabindex="-1"><<</a>
+                                </li>
+                                {%endif%}
+                                {% for i in posts.paginator.page_range %}
+                                {%if posts.number == i%}
+                                <li class="page-item"><a class="page-link" href="?page={{i}}"><strong>{{i}}</strong></a></li>
+                                {%elif i > posts.number|add:'-3' and i < posts.number|add:'3' %} <li class="page-item"><a class="page-link"
+                                        href="?page={{i}}">{{i}}</a></li>
+                                    {%endif%}
+                                    {%endfor%}
+                                    {%if posts.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{posts.next_page_number}}">>></a>
+                                    </li>
+                                    {%endif%}
+                            </ul>
+                        </nav>
+                    </div>
+                    {%endif%}
+                    <div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-md-pull-9">
+                <br><br>
+                <form action="" method="GET">
+                    {%csrf_token%}
+                    <aside class="aa-sidebar">
+                        <div class="aa-sidebar-widget">
+                            <h3 class="title">Que recherchez vous ?</h3>
+                            <div class="search-check-icon">
+                                {{myFilter.form.title}}
+                            </div>
+                        </div>
+                        <div class="aa-sidebar-widget">
+                            <h3 class="title">Ville</h3>
+                            <div class="search-check-icon">
+                                {{myFilter.form.ville}}
+                            </div>
+                        </div>
+                        <div class="aa-sidebar-widget">
+                            <h3 class="title">Pays</h3>
+                            <div class="search-check-icon">
+                                {{myFilter.form.pays}}
+                            </div>
+                        </div>
+                        <!-- single sidebar -->
+                        <div class="aa-sidebar-widget">
+                            <h3 class="title">Category</h3>
+                            <ul class="aa-catg-nav">
+                                {{myFilter.form.category}}
+                            </ul>
+                        </div>
+                        <!-- single sidebar -->
+                        <!-- single sidebar -->
+                        <div class="aa-sidebar-widget">
+                            <div id="s">
+                                <div id="place1">
+                                </div><br><br>
+                                <div id="place2">
+                                </div>
+                            </div>
+                            <!-- single sidebar -->
+                            <br>
+                            <div class="aa-sidebar-widget">
+                                <h3 class="title">Prix</h3>
+                                <!-- price range -->
+                                <input type="range" name="maxPrice"
+                                                    min="{{minMaxPrice.price__min}}"
+                                                    max="{{minMaxPrice.price__max}}" step="1"
+                                                    value="{{minMaxPrice.price__max}}"><br>
+                                <label class="valueRang">90€</label>
+                                <a class="valueRang">€</a>
+                            </div>
+                            <br>
+                            <input type="submit" class="about-view travel-btn" id="submitbtn"
+                                                            value="Rechercher">
+                    </aside>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{%if request.user.is_authenticated %}
+<a href="{%url 'addPost'%}" class="about-view travel-btn">Ajouter Annonce</a>
+<br>
+{%if not isPro%}
+<a href="{%url 'updateToPro'%}" class="about-view travel-btn">Mise a jour Pro</a>
+{%endif%}
+{%endif%}
+</div>
+<br><br>
+<br>
+<script>
+    function submitTri(){
+        b = document.getElementById('sTri')
+        b.submit()
+    }
+    var sub_cat
+    var inputs = document.getElementsByTagName("input")
+    inputs[1].classList.add("form-control")
+    inputs[2].classList.add("form-control")
+    inputs[3].classList.add("form-control")
+    inputs[4].classList.add("form-control")
+    var selects = document.getElementsByTagName("select")
+    selects[0].classList.add("form-control")
+    selects[1].classList.add("form-control")
+    //selects[3].classList.add("form-control")
+    cat = document.getElementById("id_category")
+    cat.classList.add("form-control")
+    cat.setAttribute("onchange","show_sub()")
+    //select for sub cat
+    data1 = [`<select name="sub_category" id="id_sub_category">
+        <option value="" selected>---------</option>
+        <option value="Véhicules">Véhicules</option>
+        <option value="Vélos">Vélos</option>
+        <option value="Trotinette éléctrique">Trotinette éléctrique</option>
+        <option value="Immobilier">Immobilier</option>
+        <option value="Loisirs">Loisirs</option>
+        <option value="Jeu et jouets">Jeu et jouets</option>
+        <option value="Jeux vidéos et consoles">Jeux vidéos et consoles</option>
+        <option value="Collection">Collection</option>
+        <option value="Alimentation">Alimentation</option>
+        <option value="Mode">Mode</option>
+        <option value="Périculture">Périculture</option>
+        <option value="Multimédia High tech">Multimédia High tech</option>
+        <option value="Maison et jardin">Maison et jardin</option>
+        <option value="Matériel professionnel">Matériel professionnel</option>
+        <option value="Divers">Divers</option>
+        <option value="Autres">Autres</option>
+    </select>` ,
+            ` <select name="sub_category" class="sub form-control" id="id_sub_category">
+                <option value="" selected>---------</option>
+                <option value="Forfait minimal-iste">Forfait minimal-iste</option>
+                <option value="Produits minimal-iste">Produits minimal-iste</option>
+                <option value="Rénovation minimaliste">Rénovation minimaliste</option>
+                <option value="Construction minimaliste">Construction minimaliste</option>
+                <option value="Désenconbrement">Désenconbrement</option>
+                <option value="Rangement">Rangement</option>
+                <option value="Numérisation">Numérisation</option>
+                <option value="Décoration d'interieur">Décoration d'interieur</option>
+                <option value="Architecture">Architecture</option>
+                <option value="Nettoyage">Nettoyage</option>
+                <option value="Autres">Autres</option>
+            </select>`]
+    place1 = document.getElementById("place1")
+    t = `<h3 class="title">Sub Catégories</h3>`
+    console.log(cat.value)
+    choix = ["Véhicules" ,"Vélos","Trotinette éléctrique","Immobilier",
+    "Loisirs","Jeu et jouets","Jeux vidéos et consoles","Collection",
+    "Alimentation","Mode","Périculture","Multimédia High tech","Maison et jardin",
+    "Matériel professionnel","Divers","Rénovation minimaliste","Autres"]
+    data2 = [`<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Voitures d'occasion">Voitures d'occasion</option>
+        <option value="Motos">Motos</option>
+        <option value="Camping cars et caravanes">Camping cars et caravanes</option>
+        <option value="Véhicules Utilitaires">Véhicules Utilitaires</option>
+        <option value="Camions">Camions</option>
+        <option value="Nautisme">Nautisme</option>
+        <option value="Pièces de véhicules, accessoires">Pièces de véhicules, accessoires</option>
+    </select>` ,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Vélos">Vélos</option>
+        <option value="Châssis et pièces">Châssis et pièces</option>
+        <option value="Vêtements, casques et chaussures">Vêtements, casques et chaussures</option>
+        <option value="Equipement et accessoires">Equipement et accessoires</option>
+        <option value="Autre">Autre</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Trotinette éléctrique">Trotinette éléctrique</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Maisons et villas">Maisons et villas</option>
+        <option value="Appartement">Appartement</option>
+        <option value="Immeuble">Immeuble</option>
+        <option value="Terrain et ferme">Terrain et ferme</option>
+        <option value="Parking">Parking</option>
+        <option value="Bureau / Commerce">Bureau / Commerce</option>
+        <option value="Atelier">Atelier</option>
+        <option value="Chalet">Chalet</option>
+        <option value="Chateau">Chateau</option>
+        <option value="Autres">Autres</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="INSTRUMENTS DE MUSIQUE">INSTRUMENTS DE MUSIQUE</option>
+        <option value="SPORT">SPORT</option>
+        <option value="DVD – CD – Blu ray">DVD – CD – Blu ray</option>
+        <option value="Livres et magazines">Livres et magazines</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="jouet d'éveil">jouet d'éveil</option>
+        <option value="jeux éducatifs">jeux éducatifs</option>
+        <option value="jeux de société">jeux de société</option>
+        <option value="jeux de logique">jeux de logique</option>
+        <option value="jeux d'imitation">jeux d'imitation</option>
+        <option value="jeux de motricité">jeux de motricité</option>
+        <option value="peluches">peluches</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Nintendo DS">Nintendo DS</option>
+        <option value="La Nintendo Switch">La Nintendo Switch</option>
+        <option value="Nintendo Wii">Nintendo Wii</option>
+        <option value="Nintendo Wii U">Nintendo Wii U</option>
+        <option value="Sony Playstation 5">Sony Playstation 5</option>
+        <option value="Sony PlayStation 4">Sony PlayStation 4</option>
+        <option value="Sony PlayStation 3">Sony PlayStation 3</option>
+        <option value="Sony PlayStation 2">Sony PlayStation 2</option>
+        <option value="Sony PSP, Vita">Sony PSP, Vita</option>
+        <option value="Xbox Series X & S">Xbox Series X & S</option>
+        <option value="XBOX 360">XBOX 360</option>
+        <option value="XBOX One">XBOX One</option>
+        <option value="Consoles classiques">Consoles classiques</option>
+        <option value="Jeux pour PC">Jeux pour PC</option>
+        <option value="Autres">Autres</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Collection">Collection</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="fruits et légumes">fruits et légumes</option>
+        <option value="légumes secs">légumes secs</option>
+        <option value="boissons non-alcoolisées">boissons non-alcoolisées</option>
+        <option value="autres">autres</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Vêtements">Vêtements</option>
+        <option value="Chaussures">Chaussures</option>
+        <option value="Bagagerie et accessoires">Bagagerie et accessoires</option>
+        <option value="Montres et bijoux">Montres et bijoux</option>
+        <option value="Autres">Autres</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Equipement bébé">Equipement bébé</option>
+        <option value="Vêtements bébé">Vêtements bébé</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Informatique">Informatique</option>
+        <option value="Image et Son">Image et Son</option>
+        <option value="Téléphonie">Téléphonie</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Meubles">Meubles</option>
+        <option value="Électroménager">Électroménager</option>
+        <option value="Cuisine et Arts de la table">Cuisine et Arts de la table</option>
+        <option value="Décoration">Décoration</option>
+        <option value="Linge de maison">Linge de maison</option>
+        <option value="Entretien de la maison">Entretien de la maison</option>
+        <option value="Bricolage et rénovation">Bricolage et rénovation</option>
+        <option value="Jardinage">Jardinage</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Matériel agricole">Matériel agricole</option>
+        <option value="Transport – Manutention">Transport – Manutention</option>
+        <option value="BTP - Chantier gros-œuvre">BTP - Chantier gros-œuvre</option>
+        <option value="Outillage - Matériaux 2nd-œuvre">Outillage - Matériaux 2nd-œuvre</option>
+        <option value="Équipements industriels">Équipements industriels</option>
+        <option value="Restauration - Hôtellerie">Restauration - Hôtellerie</option>
+        <option value="Fournitures de bureau">Fournitures de bureau</option>
+        <option value="Commerces & Marchés">Commerces & Marchés</option>
+        <option value="Matériel médical">Matériel médical</option>
+        <option value="Mariage et soirées">Mariage et soirées</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Divers">Divers</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Peinture">Peinture</option>
+        <option value="Platre">Platre</option>
+        <option value="Electricité">Electricité</option>
+        <option value="Plomberie">Plomberie</option>
+        <option value="Chauffage">Chauffage</option>
+        <option value="Climatisation">Climatisation</option>
+        <option value="Toiture">Toiture</option>
+        <option value="Menuiserie">Menuiserie</option>
+        <option value="Serrurerie">Serrurerie</option>
+        <option value="Sols et carrelage">Sols et carrelage</option>
+    </select>`,`<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Autres">Autres</option>
+    </select>`]
+    t2  = `<h3 class="title">Type</h3>`
+    show_sub()
+    function set(){
+        sub_cat = document.getElementById("id_sub_category")
+        sub_cat.setAttribute("onchange","show()")
+        show()
+    }
+    function show_sub(){
+        if (! cat.value){
+            place1.innerHTML = ''
+            set()
+        }else if (cat.value == "Services"){
+            place1.innerHTML = t + data1[1]
+            document.getElementById("id_sub_category").classList.add("form-control")
+            set()
+        }else{
+            place1.innerHTML = t + data1[0]
+            document.getElementById("id_sub_category").classList.add("form-control")
+            set()
+        }
+    }
+    //trying to make hidden elemnts for sub sub cat
+    show()
+    function show(){
+        c = sub_cat.value
+        i = choix.indexOf(c)
+        document.getElementById("place2").innerHTML = t2 + data2[i]
+        if ( c && cat.value){
+            document.getElementById("place2").innerHTML = t2 + data2[i]
+        }else{
+            document.getElementById("place2").innerHTML =""
+        }
+        if(cat.value == "Services" && c!="Rénovation minimaliste"){
+            console.log("asssbaa")
+            document.getElementById("place2").innerHTML =""
+        }
+    }
+
+</script>
+{%endblock%}

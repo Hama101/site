@@ -1,0 +1,71 @@
+{%extends "main.html"%}
+{%block head%}
+<style>
+    img {
+        max-width: 200px;
+        max-height: 200px;
+    }
+    .a{
+        text-decoration: none;
+        color:white;
+    }
+</style>
+<title>{{profile.user}}</title>
+{%endblock%}
+{%block body%}
+<br>
+<div class="container ">
+    <div class="row">
+        <div class="col-lg-12 col-xs-12 col-sm-9">
+            <form class="form-horizontal">
+                <div class="panel panel-default">
+                    <div class=" text-right">
+                        {%if request.user == profile.user%}
+                        <button type="submit" class="btn btn-primaryA"><a class="a" href="{%url 'updateProfile' profile.id %}">Modifier compte</a></button>
+                        {%endif%}
+                    </div>
+                    <div class="panel-body text-center">
+                        <img src="{{profile.avatar}}" class="img-circle profile-avatar"
+                            alt="User avatar">
+                        <br>
+                        <label class=" control-label">{{profile.firstname |capfirst }} {{profile.lastname |capfirst}}</label>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title text-center">Info utilisateur </h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group text-center">
+                            <label class=" control-label">Genre : </label>
+                            <label>{{profile.gender}}</label>
+                        </div>
+                        <div class="form-group text-center">
+                            <label class=" control-label">Date de naissance :</label>
+                            <label class=" control-label">{{profile.birthday}}</label>
+                        </div>
+                        <div class="form-group text-center">
+                            <label class=" control-label">Adresse :</label>
+                            <label class=" control-label">{{profile.address}} </label>
+                        </div>
+                        <div class="form-group text-center">
+                            <label class=" control-label">Telephone :</label>
+                            <label class=" control-label">{{profile.phone}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title text-center">Compte</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group text-center">
+                            <a type="submit" href="{%url 'myPosts'%}" class="a btn btn-primaryAA">afficher les annonce</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{%endblock%}

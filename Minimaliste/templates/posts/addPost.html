@@ -1,0 +1,303 @@
+{%extends 'main.html'%}
+{%block head%}
+    <title>Minimal-iste | Annonce</title>
+    <style>
+        .form-control{
+            max-width : 500px;
+        }
+    </style>
+{%endblock%}
+
+{%block body%}
+<div class="container">
+<br>
+<form action="" method="POST" enctype= "multipart/form-data">
+    {%csrf_token%}
+    {{form.media}}
+    {%for f in form%}
+        {%if f == form.sub_category%}
+            <div id="place1">
+            </div>
+        {%elif f == form.sub_sub %}
+            <div id="place2">
+            </div>
+        {%else%}
+        <span for="{{f.label  | lower}}" id="LabelOf{{f.label  | lower}}">
+            {{f.label}} :
+        </span>
+        <br>
+        {{f}}
+        <br>
+        {%endif%}
+        <br>
+    {%endfor%}
+    <input type="submit" class="btn btn-success">
+</form>
+<script>
+    textarea = document.getElementById("id_shortDescription")
+    textarea.classList.add("form-control")
+    //changing inpts class
+    l = document.getElementById("LabelOftitle")
+    inputs = document.getElementsByTagName('input')
+    for (i=0 ; i<inputs.length -1 ;i++){
+        inputs[i].classList.add('form-control')
+    }
+    priceLabel = document.getElementById("LabelOfprice")
+    priceLabel.innerHTML="Prix :"
+    //changing select class
+    selects = document.getElementsByTagName('select')
+    selects[0].classList.add('form-control')
+    //console.log(selects[0].value)
+    cat = selects[0]
+    prix =document.getElementById("id_price")
+    function check (){
+        l.innerHTML="Title"
+        console.log(selects[0].value)
+        if(cat.value == "Object gratuits"){
+            prix.value = 0
+            priceLabel.innerHTML = "Gratuit!"
+            prix.readOnly = true
+        }else if (cat.value == "Echange"){
+            priceLabel.innerHTML = "Echange!"
+            prix.readOnly = true
+            prix.value = ""
+        }else if (cat.value == "Services"){
+            priceLabel.innerHTML="Prix de Service :"
+            prix.readOnly = false
+            prix.value = ""
+        }
+        else{
+            prix.value = ""
+            priceLabel.innerHTML="Prix :"
+            prix.readOnly = false
+        }
+    }
+    cat = document.getElementById("id_category")
+    cat.classList.add("form-control")
+    cat.setAttribute("onchange","show_sub()")
+    //select for sub cat
+    data1 = [`<select name="sub_category" id="id_sub_category">
+        <option value="" selected>---------</option>
+        <option value="Véhicules">Véhicules</option>
+        <option value="Vélos">Vélos</option>
+        <option value="Trotinette éléctrique">Trotinette éléctrique</option>
+        <option value="Immobilier">Immobilier</option>
+        <option value="Loisirs">Loisirs</option>
+        <option value="Jeu et jouets">Jeu et jouets</option>
+        <option value="Jeux vidéos et consoles">Jeux vidéos et consoles</option>
+        <option value="Collection">Collection</option>
+        <option value="Alimentation">Alimentation</option>
+        <option value="Mode">Mode</option>
+        <option value="Périculture">Périculture</option>
+        <option value="Multimédia High tech">Multimédia High tech</option>
+        <option value="Maison et jardin">Maison et jardin</option>
+        <option value="Matériel professionnel">Matériel professionnel</option>
+        <option value="Divers">Divers</option>
+        <option value="Autres">Autres</option>
+    </select>` ,
+            ` <select name="sub_category" class="sub form-control" id="id_sub_category">
+                <option value="" selected>---------</option>
+                <option value="Forfait minimal-iste">Forfait minimal-iste</option>
+                <option value="Produits minimal-iste">Produits minimal-iste</option>
+                <option value="Rénovation minimaliste">Rénovation minimaliste</option>
+                <option value="Construction minimaliste">Construction minimaliste</option>
+                <option value="Désenconbrement">Désenconbrement</option>
+                <option value="Rangement">Rangement</option>
+                <option value="Numérisation">Numérisation</option>
+                <option value="Décoration d'interieur">Décoration d'interieur</option>
+                <option value="Architecture">Architecture</option>
+                <option value="Nettoyage">Nettoyage</option>
+                <option value="Autres">Autres</option>
+            </select>`]
+    place1 = document.getElementById("place1")
+    t = `<h3 class="title">Sub Catégories : </h3><br>`
+    function show_sub(){
+        check ()
+        console.log(cat.value)
+        console.log(place1)
+        if (cat.value == "Services"){
+            place1.innerHTML = t + data1[1]
+            document.getElementById("id_sub_category").classList.add("form-control")
+            set()
+        }else{
+            place1.innerHTML = t + data1[0]
+            document.getElementById("id_sub_category").classList.add("form-control")
+            set()
+        }
+        if (! cat.value){
+            place1.innerHTML = ''
+        }
+    }
+    //trying to make hidden elemnts for sub sub cat
+    choix = ["Véhicules" ,"Vélos","Trotinette éléctrique","Immobilier",
+    "Loisirs","Jeu et jouets","Jeux vidéos et consoles","Collection",
+    "Alimentation","Mode","Périculture","Multimédia High tech","Maison et jardin",
+    "Matériel professionnel","Divers","Rénovation minimaliste","Autres"]
+    data2 = [`<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Voitures d'occasion">Voitures d'occasion</option>
+        <option value="Motos">Motos</option>
+        <option value="Camping cars et caravanes">Camping cars et caravanes</option>
+        <option value="Véhicules Utilitaires">Véhicules Utilitaires</option>
+        <option value="Camions">Camions</option>
+        <option value="Nautisme">Nautisme</option>
+        <option value="Pièces de véhicules, accessoires">Pièces de véhicules, accessoires</option>
+    </select>` ,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Vélos">Vélos</option>
+        <option value="Châssis et pièces">Châssis et pièces</option>
+        <option value="Vêtements, casques et chaussures">Vêtements, casques et chaussures</option>
+        <option value="Equipement et accessoires">Equipement et accessoires</option>
+        <option value="Autre">Autre</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Trotinette éléctrique">Trotinette éléctrique</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Maisons et villas">Maisons et villas</option>
+        <option value="Appartement">Appartement</option>
+        <option value="Immeuble">Immeuble</option>
+        <option value="Terrain et ferme">Terrain et ferme</option>
+        <option value="Parking">Parking</option>
+        <option value="Bureau / Commerce">Bureau / Commerce</option>
+        <option value="Atelier">Atelier</option>
+        <option value="Chalet">Chalet</option>
+        <option value="Chateau">Chateau</option>
+        <option value="Autres">Autres</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="INSTRUMENTS DE MUSIQUE">INSTRUMENTS DE MUSIQUE</option>
+        <option value="SPORT">SPORT</option>
+        <option value="DVD – CD – Blu ray">DVD – CD – Blu ray</option>
+        <option value="Livres et magazines">Livres et magazines</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="jouet d'éveil">jouet d'éveil</option>
+        <option value="jeux éducatifs">jeux éducatifs</option>
+        <option value="jeux de société">jeux de société</option>
+        <option value="jeux de logique">jeux de logique</option>
+        <option value="jeux d'imitation">jeux d'imitation</option>
+        <option value="jeux de motricité">jeux de motricité</option>
+        <option value="peluches">peluches</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Nintendo DS">Nintendo DS</option>
+        <option value="La Nintendo Switch">La Nintendo Switch</option>
+        <option value="Nintendo Wii">Nintendo Wii</option>
+        <option value="Nintendo Wii U">Nintendo Wii U</option>
+        <option value="Sony Playstation 5">Sony Playstation 5</option>
+        <option value="Sony PlayStation 4">Sony PlayStation 4</option>
+        <option value="Sony PlayStation 3">Sony PlayStation 3</option>
+        <option value="Sony PlayStation 2">Sony PlayStation 2</option>
+        <option value="Sony PSP, Vita">Sony PSP, Vita</option>
+        <option value="Xbox Series X & S">Xbox Series X & S</option>
+        <option value="XBOX 360">XBOX 360</option>
+        <option value="XBOX One">XBOX One</option>
+        <option value="Consoles classiques">Consoles classiques</option>
+        <option value="Jeux pour PC">Jeux pour PC</option>
+        <option value="Autres">Autres</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Collection">Collection</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="fruits et légumes">fruits et légumes</option>
+        <option value="légumes secs">légumes secs</option>
+        <option value="boissons non-alcoolisées">boissons non-alcoolisées</option>
+        <option value="autres">autres</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Vêtements">Vêtements</option>
+        <option value="Chaussures">Chaussures</option>
+        <option value="Bagagerie et accessoires">Bagagerie et accessoires</option>
+        <option value="Montres et bijoux">Montres et bijoux</option>
+        <option value="Autres">Autres</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Equipement bébé">Equipement bébé</option>
+        <option value="Vêtements bébé">Vêtements bébé</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Informatique">Informatique</option>
+        <option value="Image et Son">Image et Son</option>
+        <option value="Téléphonie">Téléphonie</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Meubles">Meubles</option>
+        <option value="Électroménager">Électroménager</option>
+        <option value="Cuisine et Arts de la table">Cuisine et Arts de la table</option>
+        <option value="Décoration">Décoration</option>
+        <option value="Linge de maison">Linge de maison</option>
+        <option value="Entretien de la maison">Entretien de la maison</option>
+        <option value="Bricolage et rénovation">Bricolage et rénovation</option>
+        <option value="Jardinage">Jardinage</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Matériel agricole">Matériel agricole</option>
+        <option value="Transport – Manutention">Transport – Manutention</option>
+        <option value="BTP - Chantier gros-œuvre">BTP - Chantier gros-œuvre</option>
+        <option value="Outillage - Matériaux 2nd-œuvre">Outillage - Matériaux 2nd-œuvre</option>
+        <option value="Équipements industriels">Équipements industriels</option>
+        <option value="Restauration - Hôtellerie">Restauration - Hôtellerie</option>
+        <option value="Fournitures de bureau">Fournitures de bureau</option>
+        <option value="Commerces & Marchés">Commerces & Marchés</option>
+        <option value="Matériel médical">Matériel médical</option>
+        <option value="Mariage et soirées">Mariage et soirées</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Divers">Divers</option>
+    </select>`,
+    `<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Peinture">Peinture</option>
+        <option value="Platre">Platre</option>
+        <option value="Electricité">Electricité</option>
+        <option value="Plomberie">Plomberie</option>
+        <option value="Chauffage">Chauffage</option>
+        <option value="Climatisation">Climatisation</option>
+        <option value="Toiture">Toiture</option>
+        <option value="Menuiserie">Menuiserie</option>
+        <option value="Serrurerie">Serrurerie</option>
+        <option value="Sols et carrelage">Sols et carrelage</option>
+    </select>`,`<select name="sub_sub" class="sub_sub form-control">
+        <option value="" selected>---------</option>
+        <option value="Autres">Autres</option>
+    </select>`]
+    t2  = `<h3 class="title">Type : </h3><br>`
+    function set(){
+        sub_cat = document.getElementById("id_sub_category")
+        sub_cat.setAttribute("onchange","show()")
+        show()
+    }
+
+    function show(){
+        c = sub_cat.value
+        i = choix.indexOf(c)
+        document.getElementById("place2").innerHTML = t2 + data2[i]
+        if ( c && cat.value){
+            document.getElementById("place2").innerHTML = t2 + data2[i]
+        }else{
+            document.getElementById("place2").innerHTML =""
+        }
+        if(cat.value == "Services" && c != "Rénovation minimaliste"){
+            console.log("asssbaa")
+            document.getElementById("place2").innerHTML =""
+        }
+    }
+</script>
+</div>
+{%endblock%}

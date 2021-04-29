@@ -1,0 +1,1 @@
+web: gunicorn Minimaliste.wsgi --log-file -

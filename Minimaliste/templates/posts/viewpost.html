@@ -1,0 +1,155 @@
+{%extends 'main.html'%}
+{%block head%}
+<title>{{post}}</title>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<style>
+    body {
+        margin-top: 20px;
+    }
+</style>
+{%endblock%}
+{%block body%}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{%url 'home'%}">Accueil</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{%url 'shop'%}">Collection</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{%url 'viewpost' post.id%}">{{post}}</a></li>
+    </ol>
+</nav>
+<div class="container">
+    <!-- product category -->
+<section id="aa-product-details">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="aa-product-details-area">
+                    <div class="aa-product-details-content">
+                        <div class="row">
+                            <!-- Modal view slider -->
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+                                <div class="aa-product-view-slider">
+                                    <div id="demo-1" class="simpleLens-gallery-container">
+                                        <div class="simpleLens-container">
+                                            <div class="simpleLens-big-image-container"><a
+                                                    data-lens-image="{{post.imgUrl}}"
+                                                    class="simpleLens-lens-image"><img
+                                                        src="{{post.imgUrl}}"
+                                                        class="simpleLens-big-image"></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal view content -->
+                            <div class="col-md-7 col-sm-7 col-xs-12">
+                                <div class="aa-product-view-content">
+                                    <h3>{{post}}</h3>
+                                    <div class="aa-price-block">
+                                        {%if post.price == 0 %}
+                                        <span class="aa-product-view-price">Gratuit!</span>
+                                        {%else%}
+                                        <span class="aa-product-view-price">€ {{post.price}}</span>
+                                        {%endif%}
+                                        <p class="aa-product-avilability">Owner: <span><a href="{%url 'Profile' post.user %}">{{post.user}}</a></span></p>
+                                    </div>
+                                    <p>{{post.shortDescription}}</p>
+                                    <div class="aa-prod-view-bottom">
+                                        <h4>Telephone : </h4>
+                                        <a>{{post.user.profile.phone}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="aa-product-details-bottom">
+                        <ul class="nav nav-tabs" id="myTab2">
+                            <li><a href="#description" data-toggle="tab">Description</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="description">
+                                {{post.description | safe}}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Related product -->
+                    <div class="aa-product-related-item">
+                        <!-- quick view modal -->
+                        <div class="modal fade" id="quick-view-modal" tabindex="-1" role="dialog"
+                            aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-hidden="true">&times;</button>
+                                        <div class="row">
+                                            <!-- Modal view slider -->
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="aa-product-view-slider">
+                                                    <div class="simpleLens-gallery-container" id="demo-1">
+                                                        <div class="simpleLens-container">
+                                                            <div class="simpleLens-big-image-container">
+                                                                <a class="simpleLens-lens-image"
+                                                                    data-lens-image="img/view-slider/large/polo-shirt-1.png">
+                                                                    <img src="img/view-slider/medium/polo-shirt-1.png"
+                                                                        class="simpleLens-big-image">
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="simpleLens-thumbnails-container">
+                                                            <a href="#" class="simpleLens-thumbnail-wrapper"
+                                                                data-lens-image="img/view-slider/large/polo-shirt-1.png"
+                                                                data-big-image="img/view-slider/medium/polo-shirt-1.png">
+                                                                <img src="img/view-slider/thumbnail/polo-shirt-1.png">
+                                                            </a>
+                                                            <a href="#" class="simpleLens-thumbnail-wrapper"
+                                                                data-lens-image="img/view-slider/large/polo-shirt-3.png"
+                                                                data-big-image="img/view-slider/medium/polo-shirt-3.png">
+                                                                <img src="img/view-slider/thumbnail/polo-shirt-3.png">
+                                                            </a>
+
+                                                            <a href="#" class="simpleLens-thumbnail-wrapper"
+                                                                data-lens-image="img/view-slider/large/polo-shirt-4.png"
+                                                                data-big-image="img/view-slider/medium/polo-shirt-4.png">
+                                                                <img src="img/view-slider/thumbnail/polo-shirt-4.png">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal view content -->
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div>
+                        <!-- / quick view modal -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- / product category -->
+
+{%if post.category == "Services" %}
+<a href="{%url 'submitToPost' post.id %}">Submit to work</a>
+{%endif%}
+
+<hr>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // MDB Lightbox Init
+        $(function () {
+            $("#mdb-lightbox-ui").load("mdb-addons/mdb-lightbox-ui.html");
+        });
+    });
+    var text = document.getElementsByTagName('textarea')
+    text.classList.add('form-control')
+    text.id += 'message'
+</script>
+{%endblock%}

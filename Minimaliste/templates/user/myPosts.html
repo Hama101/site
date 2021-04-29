@@ -1,0 +1,163 @@
+{%extends 'main.html'%}
+{%block head%}
+<style>
+    .btn{
+        margin-left: 10px ;
+        margin-right: 10px ;
+    }
+    body{
+        background-color: hsl(0, 0%, 98%);
+    }
+    
+    h1,h2,h3,h4,h5,h6{
+        color:hsl(0, 0%, 30%);
+    }
+    
+    .box-element{
+        box-shadow:hsl(0, 0%, 80%) 0 0 16px;
+        background-color: #fff;
+        border-radius: 4px;
+        padding: 10px;
+    }
+    .thumbnail{
+        width: 100%;
+        height: 200px;
+        -webkit-box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
+        -moz-box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
+        box-shadow: -1px -3px 5px -2px rgba(214,214,214,1);
+    }
+    
+    .product{
+        border-radius: 0 0 4px 4px;
+    }
+    
+    .bg-dark{
+        background-color: #4f868c!important;
+    }
+    
+    #cart-icon{
+        width:25px;
+        display: inline-block;
+        margin-left: 15px;
+    }
+    
+    #cart-total{
+        display: block;
+        text-align: center;
+        color:#fff;
+        background-color: red;
+        width: 20px;
+        height: 25px;
+        border-radius: 50%;
+        font-size: 14px;
+    }
+    
+    .col-lg-4, .col-lg-6, .col-lg-8, .col-lg-12{
+        margin-top: 10px;
+    }
+    
+    .btn{
+        border-radius: 0;
+    }
+    
+    .row-image{
+        width: 100px;
+    }
+    
+    .form-field{
+        width:250px;
+        display: inline-block;
+        padding: 5px;
+    }
+    
+    .cart-row{
+        display: flex;
+        align-items: flex-stretch;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ececec;
+    
+    }
+    
+    .quantity{
+        display: inline-block;
+        font-weight: 700;
+        padding-right:10px;
+    }
+    .chg-quantity{
+        width: 12px;
+        cursor: pointer;
+        display: block;
+        margin-top: 5px;
+        transition:.1s;
+    }
+    .chg-quantity:hover{
+        opacity: .6;
+    }
+
+    .hidden{
+        display: none!important;
+    }
+</style>
+{%endblock%}
+
+{%block body%}
+<br>
+<div class="row">
+    {%for post in myposts%}
+<div class="col-lg-4">
+    <a href="{%url 'viewpost' post.id %}">
+    <div class="box-element product">
+        <img class="thumbnail" src="{{post.imgUrl}}">
+        <h5><strong>{{post.title}}</strong></h5>
+        <h6><Strong>Address : {{post.pays.upper}} , {{post.ville.upper}}</Strong></h6>
+        {%if post.price%}
+		<h4 style="display: inline-block; float: right"><strong>€ {{post.price}} </strong></h4>
+        {%else%}
+        <h4 style="display: inline-block; float: right"><strong>Free </strong></h4>
+        {%endif%}
+        <hr>
+        <a class="btn btn-success btn-sm" href="{%url 'viewpost' post.id %}">View</a>
+        {%if admin or request.user == post.user %}
+        <a href="{%url 'deletePost' post.id %}" class="btn btn-sm btn-danger" >Delete</a>
+        <br>
+        <br>
+        <a href="{%url 'updatePost' post.id %}" class="btn btn-sm btn-info" >Update</a>
+        {%endif%}
+    </div>
+    </a>
+</div>
+{%endfor%}
+</div>
+<br>
+<div>
+{%if myposts%}
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {%if myposts.has_previous%}
+        <li class="page-item disabled">
+            <a class="page-link" href="?page={{myposts.previous_page_number}}" tabindex="-1">Previous</a>
+        </li>
+        {%endif%}
+        {% for i in myposts.paginator.page_range %}
+            {%if myposts.number == i%}
+                <li class="page-item"><a class="page-link" href="?page={{i}}"><strong>{{i}}</strong></a></li>
+            {%elif i > myposts.number|add:'-3' and i < myposts.number|add:'3' %}
+                <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+            {%endif%}
+        {%endfor%}
+        {%if myposts.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{posts.next_page_number}}">Next</a>
+            </li>
+        {%endif%}
+    </ul>
+</nav>
+{%else%}
+<div class="alert alert-info" role="alert">
+    <p>Tu as aucune poste !</p>
+</div>
+{%endif%}
+</div>
+<br>
+{%endblock%}

@@ -1,0 +1,94 @@
+{%extends "main.html"%}
+{%block head%}
+<style>
+
+</style>
+<title>Minimal-iste | Profile</title>
+{%endblock%}
+{%block body%}
+<br>
+<div class="container">
+    <form action="" method="post">
+        {%csrf_token%}
+        <div class="row gutters rowGutter">
+            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                <div class="card h-100">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" id="avatar">
+                        </div>
+                        <h5 class="user-name">Nom d'utilisateur</h5>
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1">Avatar</label>
+                            <input type="file" value="" class="form-control-file" id="newAvatar" name="image" onchange="setAvatar()" required>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="row gutters rowGutter">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h6 class="mb-2  titleEditProf">Info utilisateur </h6>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    Nom
+                                    <input type="text" class="form-control" name="firstname">
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    Prénom
+                                    <input type="text" class="form-control" name="lastname">
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    Genre
+                                    <select class="form-control" name="gender">
+                                        <option>Homme</option>
+                                        <option>femme</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    Date de naissance
+                                    <input type="date" class="form-control" name="birthday">
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    Télephone
+                                    <input type="text" class="form-control" name="phone">
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                <div class="form-group">
+                                    Address
+                                    <input type="text" class="form-control" name="address">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row gutters">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="text-right">
+                                <input type="reset" id="submit" name="submit" class="btn btn-secondary" value="Annuler">
+                                <input type="submit" id="submit" name="submit" class="btn btn-primaryA" value="Soumettre">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+
+{%endblock%}
