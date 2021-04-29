@@ -28,11 +28,7 @@ from .apiKeys import code
 from django.db.models import Min ,Max
 stripe.api_key = code
 
-# Create your views here.
-def home(request):
-    admin = request.user.groups.filter(name="admins").exists()
-    posts = Post.objects.all().order_by('-id')
-
+def ispro(request):
     isPro = False
     try :
         if request.user.is_authenticated:
@@ -42,6 +38,17 @@ def home(request):
                 pro.delete()
     except:
         isPro = False
+
+    return isPro
+
+
+
+# Create your views here.
+def home(request):
+    admin = request.user.groups.filter(name="admins").exists()
+    posts = Post.objects.all().order_by('-id')
+
+    isPro = ispro(request)
 
     minMaxPrice = Post.objects.aggregate(Min('price') ,Max('price'))
 
@@ -71,15 +78,7 @@ def shop(request):
     admin = request.user.groups.filter(name="admins").exists()
     posts = Post.objects.all().order_by('-id')
 
-    isPro = False
-    try :
-        if request.user.is_authenticated:
-            pro = Pro.objects.get(user = request.user)
-            isPro = pro.has_paid
-            if not isPro:
-                pro.delete()
-    except:
-        isPro = False
+    isPro = ispro(request)
 
     minMaxPrice = Post.objects.aggregate(Min('price') ,Max('price'))
 
@@ -155,15 +154,7 @@ def filterbycat(request , cat):
         posts = posts.filter(price__lte=maxPrice)
 
 
-    isPro = False
-    try :
-        if request.user.is_authenticated:
-            pro = Pro.objects.get(user = request.user)
-            isPro = pro.has_paid
-            if not isPro:
-                pro.delete()
-    except:
-        isPro = False
+    isPro = ispro(request)
 
     paginator = Paginator(posts , 30)
     page = request.GET.get('page')
@@ -426,6 +417,8 @@ def addPost(request):
 def viewPost(request , pk):
     commentForm = CommentForm()
     post = Post.objects.get(pk = pk)
+    if post.category == "Services" and not ispro(request) :
+        return redirect("updateToPro")
 
     context = {
         'post' : post ,
@@ -475,22 +468,6 @@ def updatePost(request , pk ):
     return render(request , 'posts/addPost.html',context)
 
 
-@paied_users(allowed_roles = ['paid' , 'admins'])
-def submitToPost(request, pk):
-    post = Post.objects.get(pk=pk)
-
-    context = {
-        "post" : post ,
-    }
-    return render(request , 'posts/submitToPost.html' , context)
-
-
-@login_required(login_url='login')
-def testPayment(request):
-    if request.user.groups.filter(name="paid").exists():
-        return HttpResponse('<h1>Done your submittions done !<h1>')
-    else :
-        return redirect('payment')
 
 @login_required(login_url='login')
 def payment(request):
@@ -501,15 +478,9 @@ def payment(request):
 
 @login_required(login_url="login")
 def updateToPro(request):
-    isPro = False
-    try :
-        if request.user.is_authenticated:
-            pro = Pro.objects.get(user = request.user)
-            isPro = pro.has_paid
-            if not isPro:
-                pro.delete()
-    except:
-        isPro = False
+    isPro = ispro(request)
+    if isPro:
+        return render(request , "pro.html")
     context = {
         'isPro':isPro ,
     }

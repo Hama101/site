@@ -1,0 +1,30 @@
+{%extends 'main.html'%}
+{%block head%}
+{%endblock%}
+
+{%block body%}
+<!--*********************************************breadcrumb**************************************************-->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{%url 'home'%}">Accueil</a></li>
+        <li class="breadcrumb-item active" aria-current="page" >Pro status</li>
+    </ol>
+</nav>
+<!--*********************************************END-breadcrumb**************************************************-->
+
+
+<!-- 404 error section -->
+<section id="aa-error">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="aa-error-area">
+                    <h2>Pro</h2>
+                    <span>Thanks ! You are Pro</span>
+                    <a href="{%url 'home'%}"> Go to Homepage</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{%endblock%}

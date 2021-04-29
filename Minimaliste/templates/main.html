@@ -16,6 +16,39 @@
 		<link href="{% static 'css/style.css'%}" rel="stylesheet">
 		<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 		<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+		<style>
+			.dropbtn {
+				background-color: #afb4b2;
+				color: black;
+				padding: 12px;
+				font-size: 16px;
+				border: none;
+			  }
+			  .dropdown {
+				position: relative;
+				display: inline-block;
+			  }
+			  .dropdown-content {
+				display: none;
+				position: absolute;
+				background-color: #f1f1f1;
+				min-width: 160px;
+				box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+				z-index: 1;
+			  }
+			  .dropdown-content a {
+				color: black;
+				padding: 12px 16px;
+				text-decoration: none;
+				display: block;
+			  }
+			  .dropdown-content a:hover {background-color: #ddd;}
+			  .dropdown:hover .dropdown-content {display: block;}
+			  .dropdown:hover .dropbtn {background-color: #3e8e41;}
+			  .book-btn{
+				margin: 10px;
+			  }
+		</style>
 		{%block head%}
 		<title>Minimal-iste</title>
 		{%endblock%}
@@ -27,26 +60,35 @@
 		<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+			</button>
 			<a class="" href="{%url 'home'%}"><img src="{% static 'img/logo.png'%}" alt="logo img"> </a> </div>
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			<ul class="nav navbar-nav navbar-right">
-			<li><a href="{%url 'home'%}" class="page-scroll">Accueil</a></li>
-			<li><a href="{%url 'shop'%}" class="page-scroll">Collection</a></li>
-			<li><a href="{%url 'blog'%}" class="page-scroll">Blog</a></li>
-			<li><a href="{% url 'contact'%}" class="page-scroll">Contact</a></li>
-				{%if request.user.is_authenticated %}
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-left">
+					<li><a href="{%url 'home' %}" class="page-scroll">Accueil</a></li>
+					<li><a href="{%url 'shop'%}" class="page-scroll">Collection</a></li>
+					<li><a href="{%url 'blog'%}" class="page-scroll">Blog</a></li>
+					<li><a href="{%url 'contact'%}" class="page-scroll">Contact</a></li>
+				</ul>
+				{%if request.user.is_authenticated%}
+				<ul class="nav navbar-nav navbar-right">
 				<li>
-				<button class="book-btn" ><a href="{%url 'logout'%}">Se deconnecter</a>
-				</button>
-				</li>
-				<li><a href="{%url 'Profile' request.user.username %}" class="page-scroll">{{request.user}}</a></li>
-				{%else%}
-				<li>
-				<button class="book-btn" ><a href="{%url 'login'%}">Se Connecter</a>
-				</button></li>
-				{%endif%}
+					<li class="dropdown">
+						<a href="{%url 'Profile' request.user %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{request.user |upper  }}<span class="caret"></span></a>
+						<div class="dropdown-content">
+							<a href="{%url 'updateToPro'%}">Update to pro</a>
+							<a href="{%url 'logout'%}">Déconnexion</a>
+						</div>
+					</li>
+			</li>
+			<li> <button class="book-btn" ><a href="{%url 'addPost'%}"> Ajouter annonce</a></li>
 			</ul>
-		</div>
+			{%else%}
+			<ul class="nav navbar-nav navbar-right">
+				<li> <button  class="book-btn" ><a href="{%url 'login'%}">Se Connecter</a></button></li>
+				<li> <button class="book-btn"  ><a  href="{%url 'sign-up'%}">Rejoignez-nous</a></button></li>
+			</ul>
+			{%endif%}
+			</div>
 		</div>
 	</nav>
 	<!-- end Header -->

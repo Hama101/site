@@ -44,13 +44,13 @@ urlpatterns = [
 	path('addpost/',v.addPost , name="addPost"),
 	path('viewpost/<str:pk>/',v.viewPost , name="viewpost"),
 	path('deletepost/<str:pk>/',v.deletePost , name="deletePost"),
-	path('submitTopost/<str:pk>/', v.submitToPost , name="submitToPost"),
+	#path('submitTopost/<str:pk>/', v.submitToPost , name="submitToPost"),
 	path('deleteCom/<str:pk>/',v.deleteCom , name="deleteCom"),
 	path('updatePost/<str:pk>/',v.updatePost , name="updatePost"),
 
 	#payment
 	path('payment/',v.payment,name="payment"),
-	path('testPayment/' , v.testPayment , name="testPayment"),
+	#path('testPayment/' , v.testPayment , name="testPayment"),
 	path('charge/',v.charge,name="charge"),
 	path('success/<str:args>/',v.successMsg , name="success")
 
