@@ -13,3 +13,4 @@ minimal_iste
 
 bucket:
 minimaliste
+ss
