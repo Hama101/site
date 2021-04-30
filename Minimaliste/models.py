@@ -17,33 +17,25 @@ class Profile(m.Model):
     firstname = m.CharField(max_length=60 ,null=True , blank=True)
     lastname = m.CharField(max_length=60 ,null=True , blank=True )
     birthday = m.DateField(null=True , blank=True)
-    image = m.ImageField(null=True , blank=True)
+    image = m.ImageField(null=True , blank=True , upload_to="./profile/images/")
     gender = m.CharField(max_length=20 ,choices=sexe,null=True , blank=True)
     phone = m.CharField(max_length=20 ,null=True , blank=True)
     address = m.CharField(max_length=200 ,null=True , blank=True)
     def __str__(self):
         return self.user.username
 
-    def save(self , *args , **kwargs):
-        super().save(*args, **kwargs)
-        image = Image.open(self.image.path)
-        image = image.resize((1361,1361),Image.ANTIALIAS)
-        image.save(self.image.path)
 
 
     @property
     def avatar(self):
         try:
-            return self.image.url
+            return f"https://minimaliste.s3.eu-west-3.amazonaws.com/{self.image}"
         except :
             if self.gender == 'Homme':
                 return 'https://bootdey.com/img/Content/avatar/avatar1.png'
             else:
                 return 'https://i.pinimg.com/originals/82/ab/35/82ab3533ee71daf256f23c1ccf20ad6f.jpg'
 
-    def delete(self , *args , **kwargs):
-        super().delete(*args, **kwargs)
-        os.remove(self.image.path)
 
 # Create your models here.
 class Post(m.Model):
@@ -60,7 +52,7 @@ class Post(m.Model):
     category = m.CharField(max_length=30 , choices=cats , null=True , blank=True)
     sub_category = m.CharField(max_length=60 ,  null=True , blank=True)
     sub_sub = m.CharField(max_length=60 ,  null=True , blank=True)
-    cover = m.ImageField(null=True , blank=True )
+    cover = m.ImageField(null=True , blank=True ,upload_to="./posts/images/")
     created = m.DateTimeField(auto_now_add=True , null=True , blank=True)
     price = m.FloatField(blank=True , null=True)
     pays = m.CharField(max_length=20 , null=True , blank=True)
@@ -79,19 +71,10 @@ class Post(m.Model):
     @property
     def imgUrl(self):
         try:
-            return self.cover.url
+            return f"https://minimaliste.s3.eu-west-3.amazonaws.com/{self.cover}"
         except:
             return ''
 
-    def save(self , *args , **kwargs):
-        super().save(*args, **kwargs)
-        image = Image.open(self.cover.path)
-        image = image.resize((1361,1361),Image.ANTIALIAS)
-        image.save(self.cover.path)
-
-    def delete(self , *args , **kwargs):
-        super().delete(*args, **kwargs)
-        os.remove(self.cover.path)
 
 class Tag(m.Model):
     name = m.CharField(max_length=50, null=True, blank=True)
@@ -104,7 +87,7 @@ class Blog(m.Model):
     created = m.DateTimeField(auto_now_add=True , null=True , blank=True)
     shortDescription = m.TextField(blank=True, null=True , max_length=2000)
     body = RichTextField(null=True, blank=True)
-    cover = m.ImageField(null=True , blank=True )
+    cover = m.ImageField(null=True , blank=True ,upload_to="./blog/images/" )
     tags = m.ManyToManyField(Tag, blank=True , null=True)
 
     def __str__(self):
@@ -113,19 +96,10 @@ class Blog(m.Model):
     @property
     def imgUrl(self):
         try :
-            return self.cover.url
+            return f"https://minimaliste.s3.eu-west-3.amazonaws.com/{self.cover}"
         except:
             return ''
 
-    def save(self , *args , **kwargs):
-        super().save(*args, **kwargs)
-        image = Image.open(self.cover.path)
-        image = image.resize((1361,1361),Image.ANTIALIAS)
-        image.save(self.cover.path)
-
-    def delete(self , *args , **kwargs):
-        super().delete(*args, **kwargs)
-        os.remove(self.cover.path)
 
 class Comment(m.Model):
     user = m.ForeignKey(User , on_delete=m.CASCADE , null=True , blank=True)

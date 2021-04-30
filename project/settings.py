@@ -37,15 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     'Minimaliste',
-    
+
     'crispy_forms',
     'django_filters',
     'ckeditor',
     'ckeditor_uploader',
 
     'captcha',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -84,7 +85,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -92,6 +93,16 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'livedb',
+        'USER': 'marwa',
+        'PASSWORD': 'Minimal1990??',
+        'HOST': 'database-1.celpionqqqny.eu-west-3.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
@@ -135,16 +146,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATIC_URL = '/static/'
 
-MEDIA_URL = '/images/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
 
 
 
@@ -170,3 +174,35 @@ CKEDITOR_CONFIGS = {
         'width': '100%',
     },
 }
+
+
+
+AWS_ACCESS_KEY_ID = 'AKIAVOX3VUE4P46JSVFA'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'minimaliste'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3ManifestStaticStorage'
+AWS_REGION = "eu-west-3"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATIC_URL = '/static/'
+
+MEDIA_URL = '/images/'
+
+'''
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+<CORSRule>
+    <AllowedOrigin>*</AllowedOrigin>
+    <AllowedMethod>GET</AllowedMethod>
+    <AllowedMethod>POST</AllowedMethod>
+    <AllowedMethod>PUT</AllowedMethod>
+    <AllowedHeader>*</AllowedHeader>
+</CORSRule>
+</CORSConfiguration>
+'''

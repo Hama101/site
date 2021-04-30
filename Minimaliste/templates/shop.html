@@ -177,13 +177,7 @@
         </div>
     </div>
 </section>
-{%if request.user.is_authenticated %}
-<a href="{%url 'addPost'%}" class="about-view travel-btn">Ajouter Annonce</a>
-<br>
-{%if not isPro%}
-<a href="{%url 'updateToPro'%}" class="about-view travel-btn">Mise a jour Pro</a>
-{%endif%}
-{%endif%}
+
 </div>
 <br><br>
 <br>

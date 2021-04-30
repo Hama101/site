@@ -430,8 +430,8 @@ def viewPost(request , pk):
 @login_required(login_url="login")
 def deletePost(request , pk):
     post = Post.objects.get(pk=pk)
-    admin = User.objects.get(username="admin")
-    if request.user in [post.user , admin]:
+    #admin = User.objects.get(username="admin")
+    if request.user in [post.user]:
         post.delete()
         return redirect('shop')
     else:
